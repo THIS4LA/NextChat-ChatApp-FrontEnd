@@ -1,11 +1,12 @@
 "use client";
+
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
+
 import { Provider } from "react-redux";
-import { store } from "../../store/store";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "../../store/store";
 
 const PlusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -17,9 +18,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${PlusJakartaSans.className} antialiased`}>
-        <Navbar />
-        <Provider store={store}>{children}</Provider>
-        <Footer />
+        <Provider store={store}>
+          {/* PersistGate waits until rehydration before rendering children */}
+          <PersistGate loading={null} persistor={persistor}>
+            {children}
+          </PersistGate>
+        </Provider>
       </body>
     </html>
   );
