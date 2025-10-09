@@ -1,115 +1,30 @@
-"use client";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser, registerUser } from "../../store/authSlice.js";
+import Link from "next/link";
 
-export default function Home() {
-  const dispatch = useDispatch();
-  const { user, loading, error, token } = useSelector((state) => state.auth);
-
-  const [form, setForm] = useState({
-    userName: "",
-    email: "",
-    password: "",
-    avatar: "",
-  });
-  const [loginForm, setLoginForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleLoginChange = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
-  };
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(registerUser(form));
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    dispatch(loginUser(loginForm));
-  };
-
+const Home = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <h1>Register</h1>
-      <h1>{process.env.NEXT_PUBLIC_JWT_SECRET}</h1>
-      {loading && <p className="text-black">Loading...</p>}
-      {error && <p className="text-red-500">{error.message}</p>}
-      {user && <p className="text-green-500">Registered Successfully!</p>}
-      {token && <p className="text-green-500">Logged in Successfully!{token}</p>}
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <input
-          type="text"
-          name="userName"
-          placeholder="Username"
-          value={form.userName}
-          onChange={handleChange}
-          required
-          className="border p-2"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          className="border p-2"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-          className="border p-2"
-        />
-        <input
-          type="text"
-          name="avatar"
-          placeholder="Avatar URL"
-          value={form.avatar}
-          onChange={handleChange}
-          required
-          className="border p-2"
-        />
-        <button type="submit" className="bg-green-300 p-2 hover:bg-green-400">
-          Submit
-        </button>
-      </form>
-      <h1>Login Form</h1>
-      <form onSubmit={handleLogin} className="flex flex-col gap-2">
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={loginForm.email}
-          onChange={handleLoginChange}
-          required
-          className="border p-2"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="*******"
-          value={loginForm.password}
-          onChange={handleLoginChange}
-          required
-          className="border p-2"
-        />
-        <button type="submit" className="bg-green-300 p-2 hover:bg-green-400">
+    <div className="flex items-center justify-center h-screen">
+      <div className="max-w-md w-full mx-auto p-6 border rounded">
+        <h1 className="text-3xl mb-1 flex justify-center">
+          Welcome to Next Chat App
+        </h1>
+        <p className="mb-8 text-center text-gray-400">
+          Please login or register to continue
+        </p>
+        <Link
+          href="/login"
+          className="bg-green-300 p-2 hover:bg-green-400 text-black w-full flex justify-center mb-4"
+        >
           Login
-        </button>
-      </form>
+        </Link>
+        <p className="text-sm text-center text-gray-400">
+          Don&apos;t have an account?{" "}
+          <span className="text-green-400 ml-1 cursor-pointer hover:text-green-600">
+            <Link href="/register">Register here</Link>
+          </span>
+        </p>
+      </div>
     </div>
   );
-}
+};
+
+export default Home;
