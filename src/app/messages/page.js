@@ -9,11 +9,12 @@ import Image from "next/image.js";
 import { fetchConversations } from "../../../store/conversationSlice.js";
 import { getAvailableUsers } from "../../../store/userSlice.js";
 
+import socket from "../../../socket/socket.js";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function RecentMessages() {
-  
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -22,9 +23,15 @@ export default function RecentMessages() {
   const router = useRouter();
 
   // redux states
+  const { user } = useSelector((state) => state.auth);
   const { list } = useSelector((state) => state.conversation);
   const { users } = useSelector((state) => state.user);
-  
+
+  useEffect(() => {
+    if (user?._id) {
+      socket.emit("userConnected", user._id);
+    }
+  }, [user]);
 
   // load conversations on mount
   useEffect(() => {
@@ -56,7 +63,7 @@ export default function RecentMessages() {
         {/* Search bar */}
         <div className="relative w-full">
           <input
-           name="userName"
+            name="userName"
             type="text"
             placeholder="Search Contacts"
             value={query}
@@ -122,7 +129,9 @@ export default function RecentMessages() {
                 unoptimized
               />
               <div className="flex flex-col flex-1 min-w-0">
-                <h1 className="text-[12px] text-[#00B879]">{item.name||"user name"}</h1>
+                <h1 className="text-[12px] text-[#00B879]">
+                  {item.name || "user name"}
+                </h1>
                 <p className="text-[16px] text-[#B3B3B3] truncate">
                   {item.lastMessage?.text || "No messages yet"}
                 </p>
