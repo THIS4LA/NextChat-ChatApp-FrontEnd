@@ -2,8 +2,24 @@
 import RecentMessages from "./page.js";
 import Chat from "./[id]/page.js";
 import ProtectedRoute from "../../../components/ProtectedRoute.js";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import socket from "../../../socket/socket.js";
+import { setOnlineUsers } from "../../../store/userSlice.js";
 
 export default function MessagesLayout() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket.on("updateOnlineUsers", (onlineUserIds) => {
+      dispatch(setOnlineUsers(onlineUserIds));
+    });
+
+    return () => {
+      socket.off("updateOnlineUsers");
+    };
+  }, [dispatch]);
+  
   return (
     <ProtectedRoute>
       <div className="w-full h-screen">
