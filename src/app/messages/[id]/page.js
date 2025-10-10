@@ -28,15 +28,25 @@ export default function Chat() {
   const { messages, conversation, loading, error } = useSelector(
     (state) => state.message
   );
-
   const { user } = useSelector((state) => state.auth);
+  const onlineUsers = useSelector((state) => state.user.onlineUsers);
+  console.log(onlineUsers);
+
+  //check if other user is online
+  useEffect(() => {
+    if (onlineUsers.includes(id)) {
+      setIsOnline(true);
+    } else {
+      setIsOnline(false);
+    }
+  }, [onlineUsers, id]);
 
   //fetch messages
   useEffect(() => {
     if (id) {
       dispatch(fetchMessages(id));
     }
-  }, [id]);
+  }, [id,dispatch]);
 
   //join socket room
   useEffect(() => {
