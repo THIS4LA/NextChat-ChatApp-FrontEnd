@@ -75,7 +75,7 @@ export default function Chat() {
         conversationId: conversation._id,
         user: user.userName,
       });
-    }, 1500); // user stops typing after 1.5s inactivity
+    }, 3500); // user stops typing after 1.5s inactivity
   }
   //listen for typing events
   useEffect(() => {
