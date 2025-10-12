@@ -34,11 +34,7 @@ export default function Chat() {
 
   //check if other user is online
   useEffect(() => {
-    if (onlineUsers.includes(id)) {
-      setIsOnline(true);
-    } else {
-      setIsOnline(false);
-    }
+    setIsOnline(onlineUsers.includes(id));
   }, [onlineUsers, id]);
 
   //fetch messages
@@ -46,7 +42,7 @@ export default function Chat() {
     if (id) {
       dispatch(fetchMessages(id));
     }
-  }, [id,dispatch]);
+  }, [id, dispatch]);
 
   //join socket room
   useEffect(() => {

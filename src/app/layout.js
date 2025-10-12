@@ -3,10 +3,10 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../../store/store";
+import SocketProvider from "./providers/SocketProvider";
 
 const PlusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         <Provider store={store}>
           {/* PersistGate waits until rehydration before rendering children */}
           <PersistGate loading={null} persistor={persistor}>
-            {children}
+            <SocketProvider>{children}</SocketProvider>
           </PersistGate>
         </Provider>
       </body>
