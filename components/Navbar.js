@@ -1,8 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div className="bg-black w-full h-[58px] flex items-center justify-between px-[8px]">
       <Link href="/">
@@ -19,7 +21,7 @@ const Navbar = () => {
       </Link>
       <Link href="/">
         <Image
-          src="/user.jpg"
+          src={user?.avatar || "/unknown-user.jpg"}
           alt="User Avatar"
           className="rounded-full w-10 h-10 object-cover"
           width={40}
