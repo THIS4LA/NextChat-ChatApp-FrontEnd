@@ -18,6 +18,7 @@ import {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultChat from "./default";
+import { SyncLoader } from "react-spinners";
 
 export default function Chat() {
   const { id } = useParams();
@@ -75,7 +76,7 @@ export default function Chat() {
         conversationId: conversation._id,
         user: user.userName,
       });
-    }, 3500); // user stops typing after 1.5s inactivity
+    }, 5000); // user stops typing after 1.5s inactivity
   }
   //listen for typing events
   useEffect(() => {
@@ -223,8 +224,8 @@ export default function Chat() {
             ))}
             {otherTyping && (
               <div className="flex items-center space-x-2 text-gray-400 text-sm italic">
-                <span className="animate-pulse">
-                  {conversation.chatName} is typing...
+                <span className="animate-pulse flex items-center gap-2">
+                  {conversation.chatName} is typing <SyncLoader size={3} color="#9CA3AF"/>
                 </span>
               </div>
             )}
