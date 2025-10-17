@@ -19,9 +19,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultChat from "./default";
 import { SyncLoader } from "react-spinners";
+import { useMediaQuery } from "react-responsive";
 
 export default function Chat() {
   const { id } = useParams();
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isOnline, setIsOnline] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const dispatch = useDispatch();
@@ -135,46 +137,87 @@ export default function Chat() {
     <>
       {id ? (
         <div className="flex flex-col h-screen w-full bg-[#1D1D1D] text-white p-2">
-          <div className="bg-black w-full h-[58px] flex items-center justify-between rounded-sm px-[8px]">
-            <Link href="/">
-              <div className="flex items-center gap-4 justify-center">
-                <div className="text-2xl text-[#B3B3B3]">
-                  <IoChevronBack />
-                </div>
-                <Image
-                  src={conversation.otherUser?.avatar || "/unknown-user.jpg"}
-                  alt="other user"
-                  className="rounded-full w-[40px] h-[40px] object-cover"
-                  width={40}
-                  height={40}
-                  priority
-                  unoptimized
-                />
-                <div className="flex flex-col">
-                  <h1 className="font-semibold text-[14px]">
-                    {conversation.chatName}
-                  </h1>
+          <div className="bg-black w-full h-[58px] flex items-center justify-between rounded-sm px-[16px]">
+            {/* in mobile devices */}
+            <div className="block md:hidden">
+              <Link href="/messages">
+                <div className="flex items-center gap-4 justify-center">
+                  <div className="text-2xl text-[#B3B3B3]">
+                    <IoChevronBack />
+                  </div>
+                  <Image
+                    src={conversation.otherUser?.avatar || "/unknown-user.jpg"}
+                    alt="other user"
+                    className="rounded-full w-[40px] h-[40px] object-cover"
+                    width={40}
+                    height={40}
+                    priority
+                    unoptimized
+                  />
+                  <div className="flex flex-col">
+                    <h1 className="font-semibold text-[14px]">
+                      {conversation.chatName}
+                    </h1>
 
-                  <div
-                    className={`py-[2px] rounded-4xl items-center justify-center flex border ${
-                      isOnline ? "border-[#00B879]" : "border-[#A2A4A2]"
-                    }`}
-                  >
-                    <GoDotFill
-                      className={isOnline ? "text-[#00B879]" : "text-[#A2A4A2]"}
-                      size={12}
-                    />
-                    <p
-                      className={`text-[8px] ml-1 ${
-                        isOnline ? "text-[#00B879]" : "text-[#A2A4A2]"
+                    <div
+                      className={`py-[2px] rounded-4xl items-center justify-center flex border ${
+                        isOnline ? "border-[#00B879]" : "border-[#A2A4A2]"
                       }`}
                     >
-                      {isOnline ? "Online" : "Offline"}
-                    </p>
+                      <GoDotFill
+                        className={
+                          isOnline ? "text-[#00B879]" : "text-[#A2A4A2]"
+                        }
+                        size={12}
+                      />
+                      <p
+                        className={`text-[8px] ml-1 ${
+                          isOnline ? "text-[#00B879]" : "text-[#A2A4A2]"
+                        }`}
+                      >
+                        {isOnline ? "Online" : "Offline"}
+                      </p>
+                    </div>
                   </div>
                 </div>
+              </Link>
+            </div>
+
+            {/* above mobile devices */}
+            <div className="hidden md:flex items-center gap-4 justify-center">
+              <Image
+                src={conversation.otherUser?.avatar || "/unknown-user.jpg"}
+                alt="other user"
+                className="rounded-full w-[40px] h-[40px] object-cover"
+                width={40}
+                height={40}
+                priority
+                unoptimized
+              />
+              <div className="flex flex-col">
+                <h1 className="font-semibold text-[14px]">
+                  {conversation.chatName}
+                </h1>
+
+                <div
+                  className={`py-[2px] rounded-4xl items-center justify-center flex border ${
+                    isOnline ? "border-[#00B879]" : "border-[#A2A4A2]"
+                  }`}
+                >
+                  <GoDotFill
+                    className={isOnline ? "text-[#00B879]" : "text-[#A2A4A2]"}
+                    size={12}
+                  />
+                  <p
+                    className={`text-[8px] ml-1 ${
+                      isOnline ? "text-[#00B879]" : "text-[#A2A4A2]"
+                    }`}
+                  >
+                    {isOnline ? "Online" : "Offline"}
+                  </p>
+                </div>
               </div>
-            </Link>
+            </div>
             <Link href="/">
               <div className="text-2xl text-[#B3B3B3] pr-[12px]">
                 <FiInfo />
@@ -225,7 +268,8 @@ export default function Chat() {
             {otherTyping && (
               <div className="flex items-center space-x-2 text-gray-400 text-sm italic">
                 <span className="animate-pulse flex items-center gap-2">
-                  {conversation.chatName} is typing <SyncLoader size={3} color="#9CA3AF"/>
+                  {conversation.chatName} is typing{" "}
+                  <SyncLoader size={3} color="#9CA3AF" />
                 </span>
               </div>
             )}
