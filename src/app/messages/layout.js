@@ -1,9 +1,13 @@
 "use client";
 import RecentMessages from "./page.js";
+import { usePathname } from "next/navigation";
 import Chat from "./[id]/page.js";
 import ProtectedRoute from "../../../components/ProtectedRoute.js";
 
 export default function MessagesLayout() {
+  const pathname = usePathname();
+  // check if current path includes an id
+  const isChatOpen = /^\/messages\/[^/]+$/.test(pathname);
   return (
     <ProtectedRoute>
       <div className="w-full h-screen">
@@ -18,7 +22,7 @@ export default function MessagesLayout() {
         </div>
 
         <div className="md:hidden w-full h-full">
-          <RecentMessages />
+          {!isChatOpen ? <RecentMessages /> : <Chat />}
         </div>
       </div>
     </ProtectedRoute>
