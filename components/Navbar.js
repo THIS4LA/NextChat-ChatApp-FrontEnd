@@ -10,6 +10,7 @@ const Navbar = () => {
       <Link href="/">
         <div className="relative h-10 w-32">
           <Image
+            unoptimized
             src="/logo.png"
             alt="My Logo"
             fill
@@ -21,6 +22,7 @@ const Navbar = () => {
       </Link>
       <Link href="/">
         <Image
+          unoptimized
           src={user?.avatar || "/unknown-user.jpg"}
           alt="User Avatar"
           className="rounded-full w-10 h-10 object-cover"

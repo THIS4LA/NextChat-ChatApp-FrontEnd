@@ -55,7 +55,6 @@ const conversationSlice = createSlice({
       .addCase(fetchConversations.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
-        console.log(action.payload);
       })
       .addCase(fetchConversations.rejected, (state, action) => {
         state.loading = false;

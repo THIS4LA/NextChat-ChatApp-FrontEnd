@@ -33,7 +33,6 @@ export default function Chat() {
   );
   const { user } = useSelector((state) => state.auth);
   const onlineUsers = useSelector((state) => state.user.onlineUsers);
-  console.log(onlineUsers);
 
   //check if other user is online
   useEffect(() => {

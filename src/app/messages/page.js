@@ -86,6 +86,7 @@ export default function RecentMessages() {
                   onClick={() => handleSelectUser(user)}
                 >
                   <Image
+                    unoptimized
                     alt={user.userName}
                     src={user.avatar || "/default-avatar.png"}
                     className="rounded-full"
