@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { IoChevronBack } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 import { FiInfo } from "react-icons/fi";
@@ -45,6 +45,24 @@ export default function Chat() {
       dispatch(fetchMessages(id));
     }
   }, [id, dispatch]);
+
+  //scroll to bottom on new message
+  const chatContainerRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      scrollToBottom();
+    }
+  }, [messages]);
 
   //join socket room
   useEffect(() => {
@@ -222,7 +240,10 @@ export default function Chat() {
             </Link>
           </div>
 
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-neutral-900">
+          <div
+            className="flex-1 p-4 overflow-y-auto space-y-4 bg-neutral-900 hide-scrollbar"
+            ref={chatContainerRef}
+          >
             {messages.map((msg) => (
               <div
                 key={msg._id}
