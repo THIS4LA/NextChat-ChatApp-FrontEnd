@@ -151,7 +151,6 @@ export default function Chat() {
                     width={40}
                     height={40}
                     priority
-                    unoptimized
                   />
                   <div className="flex flex-col">
                     <h1 className="font-semibold text-[14px]">
@@ -191,7 +190,6 @@ export default function Chat() {
                 width={40}
                 height={40}
                 priority
-                unoptimized
               />
               <div className="flex flex-col">
                 <h1 className="font-semibold text-[14px]">
@@ -239,7 +237,6 @@ export default function Chat() {
                     className="rounded-full w-8 h-8 object-cover"
                     width={40}
                     height={40}
-                    unoptimized
                   />
                 )}
 
@@ -259,7 +256,6 @@ export default function Chat() {
                     className="rounded-full w-8 h-8 object-cover"
                     width={40}
                     height={40}
-                    unoptimized
                   />
                 )}
               </div>

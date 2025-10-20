@@ -2,6 +2,9 @@
 import Navbar from "../../../components/Navbar.js";
 import Footer from "../../../components/Footer.js";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 import Link from "next/link.js";
 import { useRouter } from "next/navigation.js";
 import Image from "next/image.js";
@@ -24,8 +27,8 @@ export default function RecentMessages() {
 
   // redux states
   const { user } = useSelector((state) => state.auth);
-  const { list } = useSelector((state) => state.conversation);
-  const { users } = useSelector((state) => state.user);
+  const { list, loading, error } = useSelector((state) => state.conversation);
+  const { users, userLoading, userError } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (user?._id) {
@@ -86,7 +89,6 @@ export default function RecentMessages() {
                   onClick={() => handleSelectUser(user)}
                 >
                   <Image
-                    unoptimized
                     alt={user.userName}
                     src={user.avatar || "/default-avatar.png"}
                     className="rounded-full"
@@ -127,7 +129,6 @@ export default function RecentMessages() {
                 className="rounded-full object-cover"
                 width={44}
                 height={44}
-                unoptimized
               />
               <div className="flex flex-col flex-1 min-w-0">
                 <h1 className="text-[12px] text-[#00B879]">
@@ -141,8 +142,7 @@ export default function RecentMessages() {
           ))}
         </div>
       </div>
-
-      <Footer />
+        <Footer />
     </div>
   );
 }

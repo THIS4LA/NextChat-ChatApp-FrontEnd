@@ -2,7 +2,7 @@
 const nextConfig = {
   allowedDevOrigins: ['*'],
   images: {
-    domains: ['i.pravatar.cc','www.pngfind.com','https://plus.unsplash.com'], // add the avatar domain here
+    domains: ['res.cloudinary.com'],
   },
 };
 
