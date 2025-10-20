@@ -20,7 +20,7 @@ const Navbar = () => {
         </div>
       </Link>
       <Link className="flex items-center gap-2 hover:opacity-75" href="/">
-      <h1 className="text-white text-sm font-semibold hidden sm:block">Hi, {user?.userName || "User"}!</h1>
+      <h1 className="text-white text-sm font-semibold hidden xl:block">Hi, {user?.userName || "User"}!</h1>
         <Image
           src={user?.avatar || "/unknown-user.jpg"}
           alt="User Avatar"
