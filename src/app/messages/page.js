@@ -59,7 +59,7 @@ export default function RecentMessages() {
   };
 
   return (
-    <div className="min-h-screen w-full text-white p-2">
+    <div className="min-h-screen w-full text-white p-2 relative">
       <Navbar />
 
       <div className="flex flex-col mt-4 px-2">
@@ -142,7 +142,9 @@ export default function RecentMessages() {
           ))}
         </div>
       </div>
+      <div className="absolute bottom-0 w-full">
         <Footer />
+      </div>
     </div>
   );
 }
