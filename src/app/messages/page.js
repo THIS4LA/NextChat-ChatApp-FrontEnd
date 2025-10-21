@@ -123,13 +123,14 @@ export default function RecentMessages() {
               href={`/messages/${item._id}`}
               className="flex flex-row items-center w-full h-16 gap-4 px-4 py-3 border rounded-sm cursor-pointer hover:bg-gray-800"
             >
-              <Image
-                src={item.avatar || "/default-avatar.png"}
-                alt="User avatar"
-                className="rounded-full object-cover"
-                width={44}
-                height={44}
-              />
+              <div className="w-10 h-10 relative flex-shrink-0">
+                <Image
+                  src={item.avatar || "/default-avatar.png"}
+                  alt="User avatar"
+                  fill
+                  className="rounded-full object-cover"
+                />
+              </div>
               <div className="flex flex-col flex-1 min-w-0">
                 <h1 className="text-[12px] text-[#00B879]">
                   {item.name || "user name"}
