@@ -49,8 +49,14 @@ export default function Chat() {
   //scroll to bottom on new message
   const chatContainerRef = useRef(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (isTyping) => {
     if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+    if (isTyping) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
         behavior: "smooth",
@@ -142,7 +148,9 @@ export default function Chat() {
 
   //listen for new messages
   useEffect(() => {
-    const handleNewMessage = (msg) => dispatch(addSocketMessage(msg));
+    const handleNewMessage = (msg) => {
+      dispatch(addSocketMessage(msg));
+    };
     socket.on("newMessage", handleNewMessage);
 
     return () => {
