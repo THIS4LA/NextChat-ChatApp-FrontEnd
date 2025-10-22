@@ -2,20 +2,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect } from "react";
 import { IoChevronBack } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 import { FiInfo } from "react-icons/fi";
 import { GoDotFill } from "react-icons/go";
 
-import socket from "../../../../socket/socket";
+import {getSocket} from "../../../../lib/socket.js";
 import {
   fetchMessages,
   sendMessage,
   addSocketMessage,
 } from "../../../../store/messageSlice";
 
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultChat from "./default";
 import { SyncLoader } from "react-spinners";
@@ -27,6 +26,7 @@ export default function Chat() {
   const [isOnline, setIsOnline] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const dispatch = useDispatch();
+  const socket = getSocket();
 
   const { messages, conversation, loading, error } = useSelector(
     (state) => state.message
@@ -71,10 +71,13 @@ export default function Chat() {
   }, [messages]);
 
   //join socket room
+  const joinedRoomRef = useRef(false);
+
   useEffect(() => {
-    if (conversation._id) {
-      socket.emit("joinConversation", conversation._id);
-    }
+    if (!conversation._id || joinedRoomRef.current) return;
+
+    socket.emit("joinConversation", conversation._id);
+    joinedRoomRef.current = true; // mark as joined
   }, [conversation._id]);
 
   //user typing
