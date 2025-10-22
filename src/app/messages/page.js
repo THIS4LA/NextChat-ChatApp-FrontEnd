@@ -12,8 +12,6 @@ import Image from "next/image.js";
 import { fetchConversations } from "../../../store/conversationSlice.js";
 import { getAvailableUsers } from "../../../store/userSlice.js";
 
-import socket from "../../../socket/socket.js";
-
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -30,11 +28,6 @@ export default function RecentMessages() {
   const { list, loading, error } = useSelector((state) => state.conversation);
   const { users, userLoading, userError } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    if (user?._id) {
-      socket.emit("userConnected", user._id);
-    }
-  }, [user]);
 
   // load conversations on mount
   useEffect(() => {
