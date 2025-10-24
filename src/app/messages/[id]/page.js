@@ -2,13 +2,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState, useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoChevronBack } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 import { FiInfo } from "react-icons/fi";
 import { GoDotFill } from "react-icons/go";
 
-import {getSocket} from "../../../../lib/socket.js";
+import { getSocket } from "../../../../lib/socket.js";
 import {
   fetchMessages,
   sendMessage,
@@ -128,6 +128,7 @@ export default function Chat() {
   function handleSendMessage() {
     if (!newMessage.trim()) return;
     const sendForm = {
+      _id: Date.now().toString(), // temporary id
       receiverId: id,
       text: newMessage,
       sender: user,
@@ -148,18 +149,6 @@ export default function Chat() {
     socket.emit("sendMessage", sendForm);
     setNewMessage("");
   }
-
-  //listen for new messages
-  useEffect(() => {
-    const handleNewMessage = (msg) => {
-      dispatch(addSocketMessage(msg));
-    };
-    socket.on("newMessage", handleNewMessage);
-
-    return () => {
-      socket.off("newMessage", handleNewMessage);
-    };
-  }, [dispatch]);
 
   return (
     <>
