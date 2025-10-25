@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { updateLastMessage } from "./conversationSlice";
 
 export const fetchMessages = createAsyncThunk(
   "message/fetchMessages",
@@ -61,7 +60,7 @@ export const sendMessage = createAsyncThunk(
 );
 
 const messageSlice = createSlice({
-  name: "messages",
+  name: "message",
   initialState: {
     messages: [],
     conversation: {},
