@@ -35,15 +35,22 @@ const conversationSlice = createSlice({
   reducers: {
     updateLastMessage: (state, action) => {
       const { conversationId, text, createdAt, sender } = action.payload;
-      const conversation = state.list.find(
+      const index = state.list.findIndex(
         (c) => String(c._id) === String(conversationId)
       );
 
-      if (conversation) {
+      if (index !== -1) {
+        const conversation = state.list[index];
         conversation.lastMessage.text = text;
         conversation.lastMessage.sender = sender;
         conversation.lastMessage.createdAt = createdAt;
         conversation.updatedAt = createdAt;
+        
+        // Remove from current position
+        state.list.splice(index, 1);
+
+        // Add to top
+        state.list.unshift(conversation);
       } else {
         console.warn("⚠️ Conversation not found for id:", conversationId);
       }
