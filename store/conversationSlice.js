@@ -30,20 +30,22 @@ export const fetchConversations = createAsyncThunk(
 );
 
 const conversationSlice = createSlice({
-  name: "conversations",
+  name: "conversation",
   initialState: { list: [], loading: false, error: null },
   reducers: {
     updateLastMessage: (state, action) => {
-      const { conversationId, lastMessage, updatedAt } = action.payload;
-      const conv = state.list.find((c) => c._id === conversationId);
-      if (conv) {
-        conv.lastMessage = lastMessage;
-        if (updatedAt) conv.updatedAt = updatedAt;
-        const idx = state.list.indexOf(conv);
-        if (idx > 0) {
-          state.list.splice(idx, 1);
-          state.list.unshift(conv);
-        }
+      const { conversationId, text, createdAt, sender } = action.payload;
+      const conversation = state.list.find(
+        (c) => String(c._id) === String(conversationId)
+      );
+
+      if (conversation) {
+        conversation.lastMessage.text = text;
+        conversation.lastMessage.sender = sender;
+        conversation.lastMessage.createdAt = createdAt;
+        conversation.updatedAt = createdAt;
+      } else {
+        console.warn("⚠️ Conversation not found for id:", conversationId);
       }
     },
   },
