@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DefaultChat from "./default";
 import { SyncLoader } from "react-spinners";
 import { useMediaQuery } from "react-responsive";
+import { updateLastMessage } from "../../../../store/conversationSlice.js";
 
 export default function Chat() {
   const { id } = useParams();
@@ -145,6 +146,8 @@ export default function Chat() {
     );
     //api call to store message
     dispatch(sendMessage(sendForm));
+    //update last message in conversation list
+    dispatch(updateLastMessage({ ...sendForm, sender: user._id }));
     //emit to socket server
     socket.emit("sendMessage", sendForm);
     setNewMessage("");

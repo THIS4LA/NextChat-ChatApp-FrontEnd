@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setOnlineUsers } from "../../../store/userSlice";
 import { addSocketMessage } from "../../../store/messageSlice";
 import { getSocket } from "../../../lib/socket.js";
+import { updateLastMessage } from "../../../store/conversationSlice";
 
 export default function SocketProvider({ children }) {
   const socket = getSocket();
@@ -28,6 +29,14 @@ export default function SocketProvider({ children }) {
   useEffect(() => {
     const handleNewMessage = (msg) => {
       dispatch(addSocketMessage(msg));
+      dispatch(
+        updateLastMessage({
+          conversationId: msg.conversationId,
+          text: msg.text,
+          createdAt: msg.createdAt,
+          sender: msg.senderId,
+        })
+      );
     };
     socket.on("newMessage", handleNewMessage);
 
