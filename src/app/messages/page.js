@@ -112,14 +112,15 @@ export default function RecentMessages() {
         <div className="flex flex-col gap-2">
           {list.map((item) => (
             <Link
-              key={item._id}
-              href={`/messages/${item._id}`}
+              key={item.otherUserId}
+              href={`/messages/${item.otherUserId}`}
               className="flex flex-row items-center w-full h-16 gap-4 px-4 py-3 border rounded-sm cursor-pointer hover:bg-gray-800"
             >
               <div className="w-10 h-10 relative flex-shrink-0">
                 <Image
                   src={item.avatar || "/default-avatar.png"}
                   alt="User avatar"
+                  sizes="40px"
                   fill
                   className="rounded-full object-cover"
                 />
