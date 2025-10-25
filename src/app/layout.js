@@ -16,7 +16,7 @@ const PlusJakartaSans = Plus_Jakarta_Sans({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className={`${PlusJakartaSans.className} antialiased`}>
         <Provider store={store}>
           {/* PersistGate waits until rehydration before rendering children */}
