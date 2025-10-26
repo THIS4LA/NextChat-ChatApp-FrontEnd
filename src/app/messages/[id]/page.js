@@ -50,14 +50,8 @@ export default function Chat() {
   //scroll to bottom on new message
   const chatContainerRef = useRef(null);
 
-  const scrollToBottom = (isTyping) => {
+  const scrollToBottom = () => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTo({
-        top: chatContainerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-    if (isTyping) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
         behavior: "smooth",
@@ -105,8 +99,15 @@ export default function Chat() {
         conversationId: conversation._id,
         user: user.userName,
       });
-    }, 5000); // user stops typing after 1.5s inactivity
+    }, 1500); // user stops typing after 1.5s inactivity
   }
+  //scroll to bottom when other user is typing
+  useEffect(() => {
+    if (otherTyping === true) {
+      scrollToBottom();
+    }
+  }, [otherTyping]);
+
   //listen for typing events
   useEffect(() => {
     const handleUserTyping = (userTyping) => {
