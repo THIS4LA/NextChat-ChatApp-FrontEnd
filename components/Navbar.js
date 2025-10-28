@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import Profile from "./sliders/profile";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div className="bg-black w-full h-[58px] flex items-center justify-between px-[8px]">
       <Link href="/">
@@ -19,17 +21,23 @@ const Navbar = () => {
           />
         </div>
       </Link>
-      <Link className="flex items-center gap-2 hover:opacity-75" href="/">
-      <h1 className="text-white text-sm font-semibold hidden xl:block">Hi, {user?.userName || "User"}!</h1>
+      <button
+        onClick={() => setMenuOpen(true)}
+        className="flex items-center gap-2 hover:opacity-75"
+      >
+        <h1 className="text-white text-sm font-semibold hidden xl:block">
+          Hi, {user.userName}!
+        </h1>
         <Image
-          src={user?.avatar || "/unknown-user.jpg"}
+          src={user.avatar}
           alt="User Avatar"
           className="rounded-full w-10 h-10 object-cover"
           width={40}
           height={40}
           priority
         />
-      </Link>
+      </button>
+      <Profile open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 };

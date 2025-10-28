@@ -6,13 +6,16 @@ export const registerUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       console.log("Registering user with data:", userData);
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL+"/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
       const data = await res.json();
 
@@ -30,13 +33,16 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL+"/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
       const data = await res.json();
 
@@ -59,6 +65,10 @@ const authSlice = createSlice({
     token: null,
   },
   reducers: {
+    //update auth user info(uses profile update)
+    setAuthUser: (state, action) => {
+      state.user = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -96,5 +106,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout,setAuthUser } = authSlice.actions;
 export default authSlice.reducer;
