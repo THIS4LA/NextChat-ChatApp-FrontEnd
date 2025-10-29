@@ -31,6 +31,32 @@ export const getAvailableUsers = createAsyncThunk(
   }
 );
 
+export const getUserById = createAsyncThunk(
+  "user/getUserById",
+  async (id, { rejectWithValue, getState }) => {
+    try {
+      const state = getState();
+      const token = state.auth.token;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      if (!res.ok)
+        return rejectWithValue(data?.message || "Failed to fetch user");
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (form, { rejectWithValue, getState, dispatch }) => {
@@ -73,6 +99,7 @@ const userSlice = createSlice({
   initialState: {
     users: [],
     onlineUsers: [],
+    selectedUser: null,
     loading: false,
     error: null,
     updateLoading: false,
@@ -82,6 +109,9 @@ const userSlice = createSlice({
   reducers: {
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
+    },
+    clearSelectedUser: (state) => {
+      state.selectedUser = null;
     },
   },
   extraReducers: (builder) => {
@@ -118,9 +148,22 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.updateLoading = false;
         state.updateError = action.payload;
+      })
+
+      .addCase(getUserById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedUser = action.payload;
+      })
+      .addCase(getUserById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { setOnlineUsers } = userSlice.actions;
+export const { setOnlineUsers, clearSelectedUser } = userSlice.actions;
 export default userSlice.reducer;

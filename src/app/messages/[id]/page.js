@@ -17,6 +17,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import DefaultChat from "./default";
+import ProfileInspectorView from "../../../../components/sliders/profileInspectorView.js";
 import { SyncLoader } from "react-spinners";
 import { useMediaQuery } from "react-responsive";
 import { updateLastMessage } from "../../../../store/conversationSlice.js";
@@ -25,6 +26,7 @@ export default function Chat() {
   const { id } = useParams();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isOnline, setIsOnline] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const dispatch = useDispatch();
   const socket = getSocket();
@@ -39,7 +41,6 @@ export default function Chat() {
   useEffect(() => {
     setIsOnline(onlineUsers.includes(id));
   }, [onlineUsers, id]);
-
   //fetch messages
   useEffect(() => {
     if (id) {
@@ -237,11 +238,11 @@ export default function Chat() {
                 </div>
               </div>
             </div>
-            <Link href="/">
+            <button onClick={() => setShowProfile(true)}>
               <div className="text-2xl text-[#B3B3B3] pr-[12px]">
                 <FiInfo />
               </div>
-            </Link>
+            </button>
           </div>
 
           <div
@@ -314,6 +315,13 @@ export default function Chat() {
         </div>
       ) : (
         <DefaultChat />
+      )}
+      {showProfile && (
+        <ProfileInspectorView
+          open={showProfile}
+          onClose={() => setShowProfile(false)}
+          userId={id}
+        />
       )}
     </>
   );
