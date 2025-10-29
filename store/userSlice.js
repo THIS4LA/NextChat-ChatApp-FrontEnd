@@ -99,9 +99,11 @@ const userSlice = createSlice({
   initialState: {
     users: [],
     onlineUsers: [],
-    selectedUser: null,
     loading: false,
     error: null,
+    selectedUser: null,
+    selectedUserLoading: false,
+    selectedUserError: null,
     updateLoading: false,
     updateError: null,
     updateSuccess: false,
@@ -151,16 +153,16 @@ const userSlice = createSlice({
       })
 
       .addCase(getUserById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.selectedUserLoading = true;
+        state.selectedUserError = null;
       })
       .addCase(getUserById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.selectedUserLoading = false;
         state.selectedUser = action.payload;
       })
       .addCase(getUserById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.selectedUserLoading = false;
+        state.selectedUserError = action.payload;
       });
   },
 });
