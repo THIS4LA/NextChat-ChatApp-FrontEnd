@@ -64,8 +64,8 @@ const messageSlice = createSlice({
   initialState: {
     messages: [],
     conversation: {},
-    loading: false,
-    error: null,
+    messageLoading: false,
+    messageError: null,
     sendLoading: false,
     sendError: null,
     sendMessage: [],
