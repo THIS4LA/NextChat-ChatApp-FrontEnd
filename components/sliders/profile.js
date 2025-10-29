@@ -15,6 +15,7 @@ export default function Profile({ open, onClose }) {
   const [imgUploading, setImgUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const { updateLoading, updateError,updateSuccess } = useSelector((state) => state.user);
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export default function Profile({ open, onClose }) {
       router.push("/");
     }
   };
-  
+
   const [form, setForm] = useState({
     userName: user.userName || "N/A",
     email: user.email || "N/A",
@@ -63,7 +64,7 @@ export default function Profile({ open, onClose }) {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const saveChanges = window.confirm(
       "Are you sure you want to Save Changes?"
     );
@@ -71,7 +72,7 @@ export default function Profile({ open, onClose }) {
       setEditMode(false);
       return;
     }
-    dispatch(updateUser(form));
+    await dispatch(updateUser(form));
     setEditMode(false);
   };
 
@@ -169,7 +170,7 @@ export default function Profile({ open, onClose }) {
                     value={form.userName}
                     onChange={handleChange}
                     required
-                    disabled={!editMode}
+                    disabled={!editMode || updateLoading}
                     className="border p-2 w-full rounded-sm"
                   />
                   <input
@@ -178,7 +179,7 @@ export default function Profile({ open, onClose }) {
                     placeholder="email"
                     value={form.email}
                     onChange={handleChange}
-                    disabled={!editMode}
+                    disabled={!editMode || updateLoading}
                     required
                     className="border p-2 w-full rounded-sm"
                   />
@@ -188,9 +189,14 @@ export default function Profile({ open, onClose }) {
                     <div className="flex flex-col gap-2">
                       <button
                         onClick={() => handleSave()}
-                        className="bg-[#00B879] rounded-sm p-2 hover:opacity-75 text-black w-full text-center"
+                        disabled={updateLoading || imgUploading}
+                        className="bg-[#00B879] rounded-sm p-2 hover:opacity-75 text-black w-full text-center justify-center items-center"
                       >
-                        Save Changes
+                        {updateLoading ? (
+                          <ScaleLoader color="#FFFFFF" height={14} />
+                        ) : (
+                          "Save Changes"
+                        )}
                       </button>
                       <button
                         onClick={() => {
@@ -200,6 +206,7 @@ export default function Profile({ open, onClose }) {
                           });
                           setEditMode(false);
                         }}
+                        disabled={updateLoading || imgUploading}
                         className="bg-[#C03D37] rounded-sm p-2 hover:opacity-75 text-black w-full text-center"
                       >
                         Discard Changes
@@ -222,6 +229,16 @@ export default function Profile({ open, onClose }) {
                     </div>
                   )}
                 </div>
+                {updateError && (
+                  <p className="text-red-500 text-sm text-center mt-2">
+                    {updateError || "Update failed. Please try again."}
+                  </p>
+                )}
+                {updateSuccess && (
+                  <p className="text-green-500 text-sm text-center mt-2">
+                    Profile updated successfully!
+                  </p>
+                )}
               </div>
             </div>
           </motion.aside>
