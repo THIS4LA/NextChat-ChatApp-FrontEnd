@@ -10,13 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/authSlice";
 import { useRouter } from "next/navigation";
 import { updateUser } from "../../store/userSlice";
+import { getSocket } from "../../lib/socket";
 
 export default function Profile({ open, onClose }) {
   const [imgUploading, setImgUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const { updateLoading, updateError,updateSuccess } = useSelector((state) => state.user);
+  const { updateLoading, updateError, updateSuccess } = useSelector(
+    (state) => state.user
+  );
   const router = useRouter();
+  const socket = getSocket();
 
   const dispatch = useDispatch();
 
@@ -24,6 +28,11 @@ export default function Profile({ open, onClose }) {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       dispatch(logout());
+
+      if (user?._id) {
+        socket.emit("userLogout", user._id);
+        socket.disconnect();
+      }
       router.push("/");
     }
   };
