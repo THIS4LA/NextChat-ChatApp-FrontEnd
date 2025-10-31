@@ -1,17 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../store/authSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { IoCloudUpload } from "react-icons/io5";
 import { ScaleLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const [url, setUrl] = useState("");
   const [imgUploading, setImgUploading] = useState(false);
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const router = useRouter();
+  const { user, registerLoading, registerError, registerSuccess } = useSelector(
+    (state) => state.auth
+  );
   const [form, setForm] = useState({
     userName: "",
     email: "",
@@ -53,6 +57,13 @@ const Register = () => {
     e.preventDefault();
     dispatch(registerUser(form));
   };
+
+  useEffect(() => {
+    if (registerSuccess) {
+      router.push("/login");
+    }
+  }, [registerSuccess, router]);
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="max-w-md w-full mx-auto p-6 border rounded">
@@ -61,7 +72,9 @@ const Register = () => {
           Let&apos;s Get You Started !
         </p>
         <p className="mb-8 text-center text-gray-400">
-          {error && <span className="text-red-500">{error.message}</span>}
+          {registerError && (
+            <span className="text-red-500">{registerError.message}</span>
+          )}
           {user && <span className="text-green-500">Register Successful!</span>}
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -71,7 +84,7 @@ const Register = () => {
             placeholder="Username"
             value={form.userName}
             onChange={handleChange}
-            disabled={loading}
+            disabled={registerLoading}
             required
             className="border p-2"
           />
@@ -81,7 +94,7 @@ const Register = () => {
             placeholder="Email"
             value={form.email}
             onChange={handleChange}
-            disabled={loading}
+            disabled={registerLoading}
             required
             className="border p-2"
           />
@@ -91,7 +104,7 @@ const Register = () => {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
-            disabled={loading}
+            disabled={registerLoading}
             required
             className="border p-2"
           />
@@ -144,7 +157,7 @@ const Register = () => {
           <button
             type="submit"
             className="bg-green-300 p-2 hover:bg-green-400 text-black"
-            disabled={loading || imgUploading}
+            disabled={registerLoading || imgUploading}
           >
             Register
           </button>

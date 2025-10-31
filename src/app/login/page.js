@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../store/authSlice";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ScaleLoader } from "react-spinners";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const Login = () => {
             disabled={loading}
             className="bg-green-300 p-2 hover:bg-green-400 text-black"
           >
-            Login
+            {loading ? <ScaleLoader color="#000000" height={14} /> : "Login"}
           </button>
           <p className="text-sm text-center text-gray-400">
             Don&apos;t have an account?{" "}
@@ -72,6 +73,11 @@ const Login = () => {
               <Link href="/register">Register here</Link>
             </span>
           </p>
+          {error && (
+            <p className="text-red-500 text-sm text-center mt-2">
+              {error.message || "Login Failed. Please check entered credentials & try again."}
+            </p>
+          )}
         </form>
       </div>
     </div>

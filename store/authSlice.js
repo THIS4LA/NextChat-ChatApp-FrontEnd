@@ -5,7 +5,6 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData, { rejectWithValue }) => {
     try {
-      console.log("Registering user with data:", userData);
       const res = await fetch(
         process.env.NEXT_PUBLIC_API_URL + "/api/auth/register",
         {
@@ -62,6 +61,9 @@ const authSlice = createSlice({
     user: null,
     loading: false,
     error: null,
+    registerSuccess: false,
+    registerLoading: false,
+    registerError: null,
     token: null,
   },
   reducers: {
@@ -77,16 +79,17 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.registerLoading = true;
+        state.registerError = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
+        state.registerLoading = false;
         state.user = action.payload;
+        state.registerSuccess = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.registerLoading = false;
+        state.registerError = action.payload;
       });
 
     builder
@@ -106,5 +109,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout,setAuthUser } = authSlice.actions;
+export const { logout, setAuthUser } = authSlice.actions;
 export default authSlice.reducer;
