@@ -1,7 +1,7 @@
 "use client";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../../store/authSlice";
+import { registerUser, clearAuthError } from "../../../store/authSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { IoCloudUpload } from "react-icons/io5";
@@ -22,6 +22,10 @@ const Register = () => {
     password: "",
     avatar: "",
   });
+
+  useEffect(() => {
+    dispatch(clearAuthError());
+  }, [dispatch]);
 
   async function handleImgChange(e) {
     const file = e.target.files[0];

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../store/authSlice";
+import { loginUser, clearAuthError } from "../../../store/authSlice";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ScaleLoader } from "react-spinners";
@@ -14,6 +14,9 @@ const Login = () => {
     email: "",
     password: "",
   });
+  useEffect(() => {
+    dispatch(clearAuthError());
+  }, [dispatch]);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -75,7 +78,8 @@ const Login = () => {
           </p>
           {error && (
             <p className="text-red-500 text-sm text-center mt-2">
-              {error.message || "Login Failed. Please check entered credentials & try again."}
+              {error.message ||
+                "Login Failed. Please check entered credentials & try again."}
             </p>
           )}
         </form>
