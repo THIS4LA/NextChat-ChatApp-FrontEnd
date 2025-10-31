@@ -28,7 +28,6 @@ export default function RecentMessages() {
   const { list, loading, error } = useSelector((state) => state.conversation);
   const { users, userLoading, userError } = useSelector((state) => state.user);
 
-
   // load conversations on mount
   useEffect(() => {
     dispatch(fetchConversations());
@@ -84,10 +83,11 @@ export default function RecentMessages() {
                   <Image
                     alt={user.userName}
                     src={user.avatar || "/default-avatar.png"}
-                    className="rounded-full"
                     width={32}
                     height={32}
+                    className="rounded-full object-cover w-8 h-8"
                   />
+
                   <span>{user.userName}</span>
                 </div>
               ))}
