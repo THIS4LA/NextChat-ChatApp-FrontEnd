@@ -66,6 +66,7 @@ const messageSlice = createSlice({
     conversation: {},
     messageLoading: false,
     messageError: null,
+    messageFetchSuccess: false,
     sendLoading: false,
     sendError: null,
     sendMessage: [],
@@ -84,6 +85,7 @@ const messageSlice = createSlice({
         state.loading = false;
         state.messages = action.payload.messages;
         state.conversation = action.payload.conversation;
+        state.messageFetchSuccess = true;
       })
       .addCase(fetchMessages.rejected, (state, action) => {
         state.loading = false;
