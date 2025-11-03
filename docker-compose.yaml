@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend-container
+    image: frontend:v1
+    ports:
+      - "3000:3000"
+    env_file: .env
+    volumes:
+      #creating an anonymous volume to keep container node_modules separate from host
+      - /app/node_modules
+      #mounting current directory to /app in container
+      - .:/app
+    command: npm run dev
