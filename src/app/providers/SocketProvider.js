@@ -23,7 +23,7 @@ export default function SocketProvider({ children }) {
     return () => {
       socket.off("updateOnlineUsers");
     };
-  }, [dispatch, user]);
+  }, [dispatch, socket, user]);
 
   //listen for new messages
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function SocketProvider({ children }) {
     return () => {
       socket.off("newMessage", handleNewMessage);
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   return children;
 }

@@ -74,7 +74,7 @@ export default function Chat() {
 
     socket.emit("joinConversation", conversation._id);
     joinedRoomRef.current = true; // mark as joined
-  }, [conversation._id]);
+  }, [conversation._id, socket]);
 
   //user typing
   const [isTyping, setIsTyping] = useState(false);
@@ -125,7 +125,7 @@ export default function Chat() {
       socket.off("userTyping", handleUserTyping);
       socket.off("userStoppedTyping", handleUserStoppedTyping);
     };
-  }, []);
+  }, [socket]);
 
   //send message
   function handleSendMessage() {
