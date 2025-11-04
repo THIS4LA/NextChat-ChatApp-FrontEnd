@@ -9,11 +9,13 @@ import { ScaleLoader } from "react-spinners";
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
   const { user, loading, error, token } = useSelector((state) => state.auth);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
   useEffect(() => {
     dispatch(clearAuthError());
   }, [dispatch]);
@@ -27,10 +29,15 @@ const Login = () => {
   };
 
   useEffect(() => {
+    if (typeof token === "undefined") return;
+    setIsChecking(false);
+
     if (user && token) {
-      router.push("/messages");
+      router.replace("/messages");
     }
   }, [user, token, router]);
+
+  if (isChecking) return null;
 
   return (
     <div className="flex items-center justify-center h-screen">
