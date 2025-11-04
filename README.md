@@ -3,7 +3,7 @@
 A **real-time chat web application** built using **React**, **Tailwind CSS**, and **Socket.IO Client**, seamlessly integrated with the [NextChat Backend](https://github.com/THIS4LA/NextChat-ChatApp-BackEnd).  
 This frontend provides a modern and responsive user experience with live conversations, authentication, and dynamic user presence.
 
-🌐 **Live Website:** [https://nextchat-chatapp-frontend-v1.onrender.com](https://nextchat-chatapp-frontend-v1.onrender.com)  
+🌐 **Live Website:** https://nextchat-chatapp-frontend.onrender.com/  
 ⚠️ **Note:** The website is hosted on **Render’s free tier**, so the **first request may take up to 1 minute** to load as the server spins up.
 
 ---
